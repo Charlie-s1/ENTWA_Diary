@@ -1,4 +1,4 @@
-package com.mycompany.entwa;
+package online_diary;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
