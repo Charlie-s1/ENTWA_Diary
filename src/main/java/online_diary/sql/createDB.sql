@@ -9,7 +9,7 @@
  */
 
 create table userInfo(
-    userid int not null generated always as identity (start with 1, increment by 1),
+    userID int not null generated always as identity (start with 1, increment by 1),
     userName varchar(30) not null unique,
     fname varchar(30),
     lname varchar(30),
@@ -18,6 +18,19 @@ create table userInfo(
     email varchar(100),
     password varchar(60),
     primary key (userid)
-)
-
-
+);
+create table appointment(
+    appointmentID int not null generated always as identity (start with 1, increment by 1),
+    appointmentStart timestamp,
+    appointmentEnd timestamp,
+    title varchar(30),
+    description varchar(300),
+    creatorID int references userInfo(userid),
+    primary key (appointmentID)
+);
+create table appointmentGuest(
+    appointmentGuestID int not null generated always as identity (start with 1, increment by 1),
+    guestID int references userInfo(userid),
+    appointmentID int references appointment(appointmentid),
+    primary key (appointmentGuestID)
+);

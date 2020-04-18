@@ -23,8 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "signUp", urlPatterns = {"/signUp"})
 public class signUp extends HttpServlet {
 
-    Connection conn;
-
     public signUp() throws SQLException {
         
     }
@@ -50,23 +48,20 @@ public class signUp extends HttpServlet {
         try ( PrintWriter out = response.getWriter()) {
             try {
                 String insert = "insert into USERINFO (userName, fname, lname, address, phone, email, password) values ('" 
-                + request.getParameter("userName") + "','"
-                + request.getParameter("fName") + "','"
-                + request.getParameter("lName") + "','"
-                + request.getParameter("add") + "','"
-                + request.getParameter("phone") + "','"
-                + request.getParameter("email") + "','"
-                + request.getParameter("pass") + "'"
-                + ")";
-                System.out.println(insert);
+                    + request.getParameter("userName") + "','"
+                    + request.getParameter("fName") + "','"
+                    + request.getParameter("lName") + "','"
+                    + request.getParameter("add") + "','"
+                    + request.getParameter("phone") + "','"
+                    + request.getParameter("email") + "','"
+                    + request.getParameter("pass") + "'"
+                    + ")";
                 Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/onlineDiary","onlineDiary","onlineDiary");
                 Statement st = con.createStatement();
-                System.out.println("connected");
                 st.executeUpdate(insert);
-                System.out.println("EXECUTE");
                 
                 //REDIRECT to user home
-                response.sendRedirect("Online_Diary/pages/userHome.html");
+                response.sendRedirect("/Online_Diary/pages/userHome.html");
             }
             catch(SQLException e){
                 System.out.println("cannot connecct to SQL");
