@@ -33,40 +33,37 @@ public class signIn extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int count =  0;
+        String id = "";
+        try{
+            //query db for user input
+            String query = "SELECT * FROM USERINFO WHERE userName = '" 
+                + request.getParameter("userName") + "'"
+                + "and password = '"
+                + request.getParameter("password") + "'";
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/onlineDiary","onlineDiary","onlineDiary");
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query); 
+            
+            //get user information
+            while (rs.next()){
+                for (int i=1; i<=rs.getMetaData().getColumnCount(); i++){
+                    System.out.print(rs.getString(i) + " " + rs.getMetaData().getColumnName(i));
+                    if ("USERID".equals(rs.getMetaData().getColumnName(i))){
+                        id = rs.getString(i);
+                    }
+                }
+                count = rs.getInt(1);
+            }
+        }
+        catch(SQLException e){
+            System.out.println("cannot connecct to SQL");
+            throw new Error("no connection?", e);
+        }
         response.setContentType("text/html;charset=UTF-8");
         try ( PrintWriter out = response.getWriter()) {
-            try{
-                String insert = "SELECT * FROM USERINFO WHERE userName = '" 
-                    + request.getParameter("userName") + "'"
-                    + "and password = '"
-                    + request.getParameter("password") + "'";
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/onlineDiary","onlineDiary","onlineDiary");
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery(insert); 
-                System.out.println("***|||***");
-;
-                
-                while (rs.next()){
-                    for (int i=1; i<=rs.getMetaData().getColumnCount(); i++){
-                        System.out.print(rs.getString(i) + " " + rs.getMetaData().getColumnName(i));
-                    }
-                    count = rs.getInt(1);
-                }
-                System.out.print(count);
-                if (count > 0){
-
-                    response.sendRedirect("/Online_Diary/pages/userHome.html");
-                }
-                
-            }
-            catch(SQLException e){
-                System.out.println("cannot connecct to SQL");
-                throw new Error("no connection?", e);
-            }
-            
-            
-            
+            out.print(id);
         }
+            
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

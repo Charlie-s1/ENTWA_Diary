@@ -21,12 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Charlie Smith
  */
 @WebServlet(name = "signUp", urlPatterns = {"/signUp"})
-public class signUp extends HttpServlet {
-
-    public signUp() throws SQLException {
-        
-    }
-    
+public class signUp extends HttpServlet {   
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,38 +33,45 @@ public class signUp extends HttpServlet {
      * @throws java.sql.SQLException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-         throws ServletException, IOException, SQLException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        
-        
-        
-        
-        try ( PrintWriter out = response.getWriter()) {
-            try {
-                String insert = "insert into USERINFO (userName, fname, lname, address, phone, email, password) values ('" 
-                    + request.getParameter("userName") + "','"
-                    + request.getParameter("fName") + "','"
-                    + request.getParameter("lName") + "','"
-                    + request.getParameter("add") + "','"
-                    + request.getParameter("phone") + "','"
-                    + request.getParameter("email") + "','"
-                    + request.getParameter("pass") + "'"
-                    + ")";
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/onlineDiary","onlineDiary","onlineDiary");
-                Statement st = con.createStatement();
-                st.executeUpdate(insert);
-                
-                //REDIRECT to user home
-                response.sendRedirect("/Online_Diary/pages/userHome.html");
-            }
-            catch(SQLException e){
-                System.out.println("cannot connecct to SQL");
-                throw new Error("no connection?", e);
-            }
-           
+        throws ServletException, IOException, SQLException {
+        String id = "";
+        try {
+            String insert = "insert into USERINFO (userName, fname, lname, address, phone, email, password) values ('" 
+                + request.getParameter("userName") + "','"
+                + request.getParameter("fName") + "','"
+                + request.getParameter("lName") + "','"
+                + request.getParameter("add") + "','"
+                + request.getParameter("phone") + "','"
+                + request.getParameter("email") + "','"
+                + request.getParameter("pass") + "'"
+                + ")";
+            Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/onlineDiary","onlineDiary","onlineDiary");
+            Statement st = con.createStatement();
+            st.executeUpdate(insert);
             
+            String query = "Select * from userInfo where userName = '"
+                + request.getParameter("userName") + "'"
+                + "and password = '"
+                + request.getParameter("pass") + "'";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()){
+                for (int i=1; i<=rs.getMetaData().getColumnCount(); i++){
+                    if ("USERID".equals(rs.getMetaData().getColumnName(i))){
+                        id = rs.getString(i);
+                    }
+                }
+            }
         }
+        catch(SQLException e){
+            System.out.println("cannot connecct to SQL");
+            throw new Error("no connection?", e);
+        } 
+        response.setContentType("text/html;charset=UTF-8");
+        try ( PrintWriter out = response.getWriter()) {
+            System.out.println("ID = " + id);
+            out.print(id);
+        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
