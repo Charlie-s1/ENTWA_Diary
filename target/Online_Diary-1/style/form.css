@@ -1,0 +1,32 @@
+form{
+    width:33%;
+    margin: auto;
+    text-align: center;
+}
+input{
+    padding:.5rem;
+    margin-top:1.5rem;
+}
+input[type="text"]{
+    height:1rem;
+    width:100%;
+}
+input:focus{
+    outline:none;
+}
+input[type="button"]{
+    cursor: pointer;
+    font-size: 1rem;
+    color:white;
+    height:2.5rem;
+    width:40%;
+    background-color: #51B6C7;
+    border:none;
+}
+
+#searchUser, #searchAppt{
+    margin-top: 10rem;
+}
+#searchUser h2, #searchAppt h2{
+    margin:0;
+}
