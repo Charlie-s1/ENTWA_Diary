@@ -1,4 +1,4 @@
-package online_diary.resources;
+package onlinediary.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

@@ -1,4 +1,4 @@
-package online_diary;
+package onlinediary;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
